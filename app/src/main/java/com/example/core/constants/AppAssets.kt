@@ -11,6 +11,8 @@ object AppAssets {
     const val savingsBanner = "file:///android_asset/banners/savings_banner.png"
     const val debtBanner = "file:///android_asset/banners/debt_banner.png"
     const val receivableBanner = "file:///android_asset/banners/receivable_banner.png"
+    const val ewalletBanner = "file:///android_asset/banners/ewallet_banner.png"
+    const val gameTopupBanner = "file:///android_asset/banners/game_topup_banner.png"
     
     const val ytmp3Banner = "file:///android_asset/banners/ytmp3_banner.png"
     const val aiBanner = "file:///android_asset/banners/ai_banner.png"

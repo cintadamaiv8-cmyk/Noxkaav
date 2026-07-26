@@ -286,6 +286,8 @@ fun NoxKaavApp() {
                             "Tabungan" -> com.example.core.constants.AppAssets.savingsBanner
                             "Hutang" -> com.example.core.constants.AppAssets.debtBanner
                             "Piutang" -> com.example.core.constants.AppAssets.receivableBanner
+                            "Top Up E-Wallet" -> com.example.core.constants.AppAssets.ewalletBanner
+                            "Top Up Game" -> com.example.core.constants.AppAssets.gameTopupBanner
                             "YTMP3" -> com.example.core.constants.AppAssets.ytmp3Banner
                             "AI" -> com.example.core.constants.AppAssets.aiBanner
                             "Bot WA" -> com.example.core.constants.AppAssets.botwaBanner
