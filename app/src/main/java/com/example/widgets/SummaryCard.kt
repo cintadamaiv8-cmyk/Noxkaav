@@ -18,16 +18,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.core.constants.AppDimensions
 import com.example.core.constants.AppText
+import com.example.shared.animations.cyberNeonBorder
 
 @Composable
 fun SummaryCard() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .cyberNeonBorder(radius = AppDimensions.RadiusCard),
         shape = RoundedCornerShape(AppDimensions.RadiusCard),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = AppDimensions.ElevationCard)
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(modifier = Modifier.padding(AppDimensions.PaddingCard)) {
             Text(

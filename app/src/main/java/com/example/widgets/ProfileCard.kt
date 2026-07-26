@@ -33,17 +33,18 @@ import androidx.compose.material.icons.filled.FiberManualRecord
 import androidx.compose.material.icons.filled.CalendarToday
 import coil.compose.AsyncImage
 import com.example.core.constants.AppAssets
+import com.example.shared.animations.cyberNeonBorder
 
 @Composable
 fun ProfileCard() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .cyberNeonBorder(radius = 24.dp),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f)),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -73,7 +74,7 @@ fun ProfileCard() {
                 // Details
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "SALAM,",
+                        text = "WELCOME BACK,",
                         fontSize = 10.sp,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,
@@ -86,7 +87,7 @@ fun ProfileCard() {
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     Text(
-                        text = "Premium Member",
+                        text = "Founder • Lead Developer",
                         fontSize = 13.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -99,7 +100,7 @@ fun ProfileCard() {
                         .padding(horizontal = 12.dp, vertical = 6.dp)
                 ) {
                     Text(
-                        text = "PRO",
+                        text = "👑 OWNER",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
