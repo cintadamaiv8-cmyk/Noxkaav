@@ -64,6 +64,19 @@ import com.example.pages.prayer.PrayerPage
 import kotlinx.coroutines.launch
 import androidx.compose.ui.graphics.Color
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.material.icons.filled.NotificationsNone
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.IconButton
+import com.example.widgets.BannerCard
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -183,34 +196,158 @@ fun NoxKaavApp() {
             }
         }
     ) {
+        val easeInOutCubic = CubicBezierEasing(0.65f, 0.05f, 0.36f, 1f)
+        val animDuration = 300
+
         Scaffold { innerPadding ->
-            Box(modifier = Modifier.fillMaxSize()) {
-                NavHost(navController, startDestination = com.example.core.routes.AppRoutes.HOME, modifier = Modifier.padding(innerPadding)) {
-                    composable(com.example.core.routes.AppRoutes.HOME) {
-                        HomePage(
-                            onNavigateToPlaceholder = { title ->
-                                navController.navigate("placeholder/$title")
-                            },
-                            onOpenDrawer = {
-                                scope.launch { drawerState.open() }
-                            }
-                        )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+            ) {
+                // Persistent AppBar
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+                val title = when {
+                    currentRoute == com.example.core.routes.AppRoutes.HOME -> "Home"
+                    currentRoute == com.example.core.routes.AppRoutes.PRAYER -> "Jadwal Sholat"
+                    currentRoute == com.example.core.routes.AppRoutes.HISTORY -> "Riwayat"
+                    currentRoute == com.example.core.routes.AppRoutes.BACKUP -> "Backup"
+                    currentRoute == com.example.core.routes.AppRoutes.SETTINGS -> "Pengaturan"
+                    currentRoute?.startsWith("placeholder/") == true -> {
+                        navBackStackEntry?.arguments?.getString("title") ?: "Menu"
                     }
-                    composable(com.example.core.routes.AppRoutes.PRAYER) {
-                        PrayerPage(onOpenDrawer = { scope.launch { drawerState.open() } })
+                    else -> "App"
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(MaterialTheme.colorScheme.primary),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        IconButton(onClick = { scope.launch { drawerState.open() } }, modifier = Modifier.size(32.dp)) {
+                            Icon(
+                                imageVector = Icons.Default.Menu,
+                                contentDescription = "Menu",
+                                tint = MaterialTheme.colorScheme.background,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
                     }
-                    composable(com.example.core.routes.AppRoutes.HISTORY) {
-                        PlaceholderPage(icon = Icons.Default.History, title = "Riwayat", onOpenDrawer = { scope.launch { drawerState.open() } })
+
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Text(
+                        text = title,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        IconButton(onClick = { /* TODO */ }, modifier = Modifier.size(40.dp)) {
+                            Icon(
+                                imageVector = Icons.Default.NotificationsNone,
+                                contentDescription = "Notifications",
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
                     }
-                    composable(com.example.core.routes.AppRoutes.BACKUP) {
-                        PlaceholderPage(icon = Icons.Default.Backup, title = "Backup", onOpenDrawer = { scope.launch { drawerState.open() } })
+                }
+
+                // Persistent Banner
+                val bannerPath = when {
+                    currentRoute == com.example.core.routes.AppRoutes.HOME -> com.example.core.constants.AppAssets.homeBanner
+                    currentRoute == com.example.core.routes.AppRoutes.PRAYER -> com.example.core.constants.AppAssets.prayerBanner
+                    currentRoute == com.example.core.routes.AppRoutes.HISTORY -> com.example.core.constants.AppAssets.historyBanner
+                    currentRoute == com.example.core.routes.AppRoutes.BACKUP -> com.example.core.constants.AppAssets.backupBanner
+                    currentRoute == com.example.core.routes.AppRoutes.SETTINGS -> com.example.core.constants.AppAssets.settingsBanner
+                    currentRoute?.startsWith("placeholder/") == true -> {
+                        val titleArg = navBackStackEntry?.arguments?.getString("title") ?: ""
+                        when (titleArg) {
+                            "Tambah Pengeluaran" -> com.example.core.constants.AppAssets.expenseBanner
+                            "Tabungan" -> com.example.core.constants.AppAssets.savingsBanner
+                            "Hutang" -> com.example.core.constants.AppAssets.debtBanner
+                            "Piutang" -> com.example.core.constants.AppAssets.receivableBanner
+                            "YTMP3" -> com.example.core.constants.AppAssets.ytmp3Banner
+                            "AI" -> com.example.core.constants.AppAssets.aiBanner
+                            "Bot WA" -> com.example.core.constants.AppAssets.botwaBanner
+                            "Track COC Mu" -> com.example.core.constants.AppAssets.cocBanner
+                            "Browser" -> com.example.core.constants.AppAssets.browserBanner
+                            "Maps" -> com.example.core.constants.AppAssets.mapsBanner
+                            else -> com.example.core.constants.AppAssets.homeBanner
+                        }
                     }
-                    composable(com.example.core.routes.AppRoutes.SETTINGS) {
-                        com.example.features.settings.SettingsPage(onOpenDrawer = { scope.launch { drawerState.open() } })
-                    }
-                    composable(com.example.core.routes.AppRoutes.PLACEHOLDER) { backStackEntry ->
-                        val title = backStackEntry.arguments?.getString("title") ?: "Menu"
-                        PlaceholderPage(icon = Icons.Default.History, title = title, onOpenDrawer = { scope.launch { drawerState.open() } })
+                    else -> com.example.core.constants.AppAssets.homeBanner
+                }
+                BannerCard(imagePath = bannerPath)
+
+                Box(modifier = Modifier.fillMaxSize()) {
+                    NavHost(
+                        navController = navController,
+                        startDestination = com.example.core.routes.AppRoutes.HOME,
+                        enterTransition = {
+                            fadeIn(animationSpec = tween(animDuration, easing = easeInOutCubic)) +
+                            slideInHorizontally(animationSpec = tween(animDuration, easing = easeInOutCubic), initialOffsetX = { 48 }) +
+                            scaleIn(initialScale = 0.98f, animationSpec = tween(animDuration, easing = easeInOutCubic))
+                        },
+                        exitTransition = {
+                            fadeOut(animationSpec = tween(animDuration, easing = easeInOutCubic)) +
+                            slideOutHorizontally(animationSpec = tween(animDuration, easing = easeInOutCubic), targetOffsetX = { -48 }) +
+                            scaleOut(targetScale = 0.98f, animationSpec = tween(animDuration, easing = easeInOutCubic))
+                        },
+                        popEnterTransition = {
+                            fadeIn(animationSpec = tween(animDuration, easing = easeInOutCubic)) +
+                            slideInHorizontally(animationSpec = tween(animDuration, easing = easeInOutCubic), initialOffsetX = { -48 }) +
+                            scaleIn(initialScale = 0.98f, animationSpec = tween(animDuration, easing = easeInOutCubic))
+                        },
+                        popExitTransition = {
+                            fadeOut(animationSpec = tween(animDuration, easing = easeInOutCubic)) +
+                            slideOutHorizontally(animationSpec = tween(animDuration, easing = easeInOutCubic), targetOffsetX = { 48 }) +
+                            scaleOut(targetScale = 0.98f, animationSpec = tween(animDuration, easing = easeInOutCubic))
+                        }
+                    ) {
+                        composable(com.example.core.routes.AppRoutes.HOME) {
+                            HomePage(
+                                onNavigateToPlaceholder = { titleArgument ->
+                                    navController.navigate("placeholder/$titleArgument")
+                                },
+                                onOpenDrawer = {
+                                    scope.launch { drawerState.open() }
+                                }
+                            )
+                        }
+                        composable(com.example.core.routes.AppRoutes.PRAYER) {
+                            PrayerPage(onOpenDrawer = { scope.launch { drawerState.open() } })
+                        }
+                        composable(com.example.core.routes.AppRoutes.HISTORY) {
+                            PlaceholderPage(icon = Icons.Default.History, title = "Riwayat", onOpenDrawer = { scope.launch { drawerState.open() } })
+                        }
+                        composable(com.example.core.routes.AppRoutes.BACKUP) {
+                            PlaceholderPage(icon = Icons.Default.Backup, title = "Backup", onOpenDrawer = { scope.launch { drawerState.open() } })
+                        }
+                        composable(com.example.core.routes.AppRoutes.SETTINGS) {
+                            com.example.features.settings.SettingsPage(onOpenDrawer = { scope.launch { drawerState.open() } })
+                        }
+                        composable(com.example.core.routes.AppRoutes.PLACEHOLDER) { backStackEntry ->
+                            val routeTitle = backStackEntry.arguments?.getString("title") ?: "Menu"
+                            PlaceholderPage(icon = Icons.Default.History, title = routeTitle, onOpenDrawer = { scope.launch { drawerState.open() } })
+                        }
                     }
                 }
             }

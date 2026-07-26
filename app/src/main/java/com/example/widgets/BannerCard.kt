@@ -22,7 +22,7 @@ import com.example.core.constants.AppAssets
 import com.example.shared.animations.cyberNeonBorder
 
 @Composable
-fun BannerCard() {
+fun BannerCard(imagePath: String = AppAssets.homeBanner) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,7 +35,7 @@ fun BannerCard() {
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             AsyncImage(
-                model = AppAssets.HOME_BANNER,
+                model = imagePath,
                 contentDescription = "Banner",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
