@@ -206,7 +206,7 @@ fun NoxKaavApp() {
                         PlaceholderPage(icon = Icons.Default.Backup, title = "Backup", onOpenDrawer = { scope.launch { drawerState.open() } })
                     }
                     composable(com.example.core.routes.AppRoutes.SETTINGS) {
-                        PlaceholderPage(icon = Icons.Default.Settings, title = "Pengaturan", onOpenDrawer = { scope.launch { drawerState.open() } })
+                        com.example.features.settings.SettingsPage(onOpenDrawer = { scope.launch { drawerState.open() } })
                     }
                     composable(com.example.core.routes.AppRoutes.PLACEHOLDER) { backStackEntry ->
                         val title = backStackEntry.arguments?.getString("title") ?: "Menu"
