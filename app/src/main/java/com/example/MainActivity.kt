@@ -215,6 +215,7 @@ fun NoxKaavApp() {
                     currentRoute == com.example.core.routes.AppRoutes.HISTORY -> "Riwayat"
                     currentRoute == com.example.core.routes.AppRoutes.BACKUP -> "Backup"
                     currentRoute == com.example.core.routes.AppRoutes.SETTINGS -> "Pengaturan"
+                    currentRoute == "quick_shopping" -> "Belanja Cepat"
                     currentRoute?.startsWith("placeholder/") == true -> {
                         navBackStackEntry?.arguments?.getString("title") ?: "Menu"
                     }
@@ -277,6 +278,7 @@ fun NoxKaavApp() {
                     currentRoute == com.example.core.routes.AppRoutes.HISTORY -> com.example.core.constants.AppAssets.historyBanner
                     currentRoute == com.example.core.routes.AppRoutes.BACKUP -> com.example.core.constants.AppAssets.backupBanner
                     currentRoute == com.example.core.routes.AppRoutes.SETTINGS -> com.example.core.constants.AppAssets.settingsBanner
+                    currentRoute == "quick_shopping" -> com.example.core.constants.AppAssets.expenseBanner
                     currentRoute?.startsWith("placeholder/") == true -> {
                         val titleArg = navBackStackEntry?.arguments?.getString("title") ?: ""
                         when (titleArg) {
@@ -336,7 +338,7 @@ fun NoxKaavApp() {
                             PrayerPage(onOpenDrawer = { scope.launch { drawerState.open() } })
                         }
                         composable(com.example.core.routes.AppRoutes.HISTORY) {
-                            PlaceholderPage(icon = Icons.Default.History, title = "Riwayat", onOpenDrawer = { scope.launch { drawerState.open() } })
+                            com.example.features.expense.HistoryPage(onOpenDrawer = { scope.launch { drawerState.open() } })
                         }
                         composable(com.example.core.routes.AppRoutes.BACKUP) {
                             PlaceholderPage(icon = Icons.Default.Backup, title = "Backup", onOpenDrawer = { scope.launch { drawerState.open() } })
@@ -344,9 +346,16 @@ fun NoxKaavApp() {
                         composable(com.example.core.routes.AppRoutes.SETTINGS) {
                             com.example.features.settings.SettingsPage(onOpenDrawer = { scope.launch { drawerState.open() } })
                         }
+                        composable("quick_shopping") {
+                            com.example.features.expense.QuickShoppingPage(onBack = { navController.popBackStack() })
+                        }
                         composable(com.example.core.routes.AppRoutes.PLACEHOLDER) { backStackEntry ->
                             val routeTitle = backStackEntry.arguments?.getString("title") ?: "Menu"
-                            PlaceholderPage(icon = Icons.Default.History, title = routeTitle, onOpenDrawer = { scope.launch { drawerState.open() } })
+                            if (routeTitle == "Tambah Pengeluaran") {
+                                com.example.features.expense.ExpenseMenuPage(onNavigateTo = { navController.navigate(it) })
+                            } else {
+                                PlaceholderPage(icon = Icons.Default.History, title = routeTitle, onOpenDrawer = { scope.launch { drawerState.open() } })
+                            }
                         }
                     }
                 }

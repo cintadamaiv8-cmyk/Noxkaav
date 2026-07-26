@@ -133,3 +133,13 @@ dependencies {
   "ksp"(libs.androidx.room.compiler)
   "ksp"(libs.moshi.kotlin.codegen)
 }
+
+
+tasks.register<Copy>("copyAppIcon") {
+    from("src/main/assets/icons/icon_app.png")
+    into("src/main/res/drawable-nodpi/")
+    rename("icon_app.png", "ic_app_foreground_generated.png")
+}
+tasks.named("preBuild") {
+    dependsOn("copyAppIcon")
+}
