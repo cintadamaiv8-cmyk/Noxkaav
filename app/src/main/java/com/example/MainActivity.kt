@@ -28,13 +28,12 @@ import androidx.compose.material.icons.filled.Backup
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
@@ -61,7 +60,9 @@ import com.example.core.constants.AppDimensions
 import com.example.core.theme.MyApplicationTheme
 import com.example.pages.PlaceholderPage
 import com.example.pages.home.HomePage
+import com.example.pages.prayer.PrayerPage
 import kotlinx.coroutines.launch
+import androidx.compose.ui.graphics.Color
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +84,7 @@ fun NoxKaavApp() {
     
     val items = listOf(
         NavigationItem("Home", com.example.core.routes.AppRoutes.HOME, Icons.Default.Home),
+        NavigationItem("Jadwal Sholat", com.example.core.routes.AppRoutes.PRAYER, Icons.Default.DateRange),
         NavigationItem("Riwayat", com.example.core.routes.AppRoutes.HISTORY, Icons.Default.History),
         NavigationItem("Backup", com.example.core.routes.AppRoutes.BACKUP, Icons.Default.Backup),
         NavigationItem("Pengaturan", com.example.core.routes.AppRoutes.SETTINGS, Icons.Default.Settings)
@@ -155,17 +157,17 @@ fun NoxKaavApp() {
                     }
                 }
                 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 
                 // Drawer Items
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
                 
                 items.forEach { item ->
-                    NavigationDrawerItem(
-                        icon = { Icon(item.icon, contentDescription = item.title) },
-                        label = { Text(item.title) },
-                        selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
+                    val isSelected = currentDestination?.hierarchy?.any { it.route == item.route } == true
+                    DrawerCapsuleItem(
+                        item = item,
+                        selected = isSelected,
                         onClick = {
                             scope.launch { drawerState.close() }
                             navController.navigate(item.route) {
@@ -175,16 +177,7 @@ fun NoxKaavApp() {
                                 launchSingleTop = true
                                 restoreState = true
                             }
-                        },
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-                        colors = NavigationDrawerItemDefaults.colors(
-                            selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                            selectedIconColor = MaterialTheme.colorScheme.primary,
-                            selectedTextColor = MaterialTheme.colorScheme.primary,
-                            unselectedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        }
                     )
                 }
             }
@@ -203,6 +196,9 @@ fun NoxKaavApp() {
                             }
                         )
                     }
+                    composable(com.example.core.routes.AppRoutes.PRAYER) {
+                        PrayerPage(onOpenDrawer = { scope.launch { drawerState.open() } })
+                    }
                     composable(com.example.core.routes.AppRoutes.HISTORY) {
                         PlaceholderPage(icon = Icons.Default.History, title = "Riwayat", onOpenDrawer = { scope.launch { drawerState.open() } })
                     }
@@ -219,6 +215,39 @@ fun NoxKaavApp() {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun DrawerCapsuleItem(
+    item: NavigationItem,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    val borderColor = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent
+    val backgroundColor = if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else Color.Transparent
+    val contentColor = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 6.dp)
+            .shadow(if (selected) 8.dp else 0.dp, RoundedCornerShape(24.dp), spotColor = borderColor)
+            .background(backgroundColor, RoundedCornerShape(24.dp))
+            .border(1.dp, borderColor, RoundedCornerShape(24.dp))
+            .clip(RoundedCornerShape(24.dp))
+            .clickable(onClick = onClick)
+            .padding(horizontal = 20.dp, vertical = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(item.icon, contentDescription = item.title, tint = contentColor, modifier = Modifier.size(24.dp))
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(
+            text = item.title,
+            color = contentColor,
+            fontSize = 16.sp,
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium
+        )
     }
 }
 

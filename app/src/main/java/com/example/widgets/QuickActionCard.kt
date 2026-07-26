@@ -15,10 +15,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.AttachMoney
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Handshake
-import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.Payments
+import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -34,7 +37,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.core.theme.NoxDivider
 
 @Composable
 fun QuickActionCard(onActionClick: (String) -> Unit) {
@@ -63,6 +65,13 @@ fun QuickActionCard(onActionClick: (String) -> Unit) {
                 )
                 HorizontalDivider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f), thickness = 1.dp)
                 ActionItem(
+                    icon = Icons.Default.AccountBalance,
+                    title = "Tabungan",
+                    subtitle = "Kelola tabungan pribadi",
+                    onClick = { onActionClick("Tabungan") }
+                )
+                HorizontalDivider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f), thickness = 1.dp)
+                ActionItem(
                     icon = Icons.Default.Handshake,
                     title = "Hutang",
                     subtitle = "Catat pinjaman keluar",
@@ -70,7 +79,7 @@ fun QuickActionCard(onActionClick: (String) -> Unit) {
                 )
                 HorizontalDivider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f), thickness = 1.dp)
                 ActionItem(
-                    icon = Icons.Default.AccountBalanceWallet,
+                    icon = Icons.Default.Payments,
                     title = "Piutang",
                     subtitle = "Catat uang masuk",
                     onClick = { onActionClick("Piutang") }
@@ -88,6 +97,20 @@ fun QuickActionCard(onActionClick: (String) -> Unit) {
                     title = "AI",
                     subtitle = "Tanya AI Assistant",
                     onClick = { onActionClick("AI") }
+                )
+                HorizontalDivider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f), thickness = 1.dp)
+                ActionItem(
+                    icon = Icons.Default.Chat,
+                    title = "Bot WA",
+                    subtitle = "Kelola Bot WhatsApp",
+                    onClick = { onActionClick("Bot WA") }
+                )
+                HorizontalDivider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f), thickness = 1.dp)
+                ActionItem(
+                    icon = Icons.Default.Security,
+                    title = "Track COC Mu",
+                    subtitle = "Pantau akun Clash of Clans",
+                    onClick = { onActionClick("Track COC Mu") }
                 )
             }
         }

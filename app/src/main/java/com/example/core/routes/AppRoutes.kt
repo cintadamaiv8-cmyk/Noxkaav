@@ -2,6 +2,7 @@ package com.example.core.routes
 
 object AppRoutes {
     const val HOME = "home"
+    const val PRAYER = "jadwal_sholat"
     const val HISTORY = "riwayat"
     const val BACKUP = "backup"
     const val SETTINGS = "pengaturan"

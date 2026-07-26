@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.example.widgets.BannerCard
 import com.example.widgets.ProfileCard
 import com.example.widgets.QuickActionCard
+import com.example.widgets.SummaryCard
 
 @Composable
 fun HomePage(onNavigateToPlaceholder: (String) -> Unit, onOpenDrawer: () -> Unit) {
@@ -100,6 +101,8 @@ fun HomePage(onNavigateToPlaceholder: (String) -> Unit, onOpenDrawer: () -> Unit
         QuickActionCard(onActionClick = { actionName ->
             onNavigateToPlaceholder(actionName)
         })
+        
+        SummaryCard()
         
         Spacer(modifier = Modifier.size(16.dp))
     }
