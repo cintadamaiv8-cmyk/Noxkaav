@@ -279,6 +279,8 @@ fun NoxKaavApp() {
                     currentRoute == com.example.core.routes.AppRoutes.BACKUP -> com.example.core.constants.AppAssets.backupBanner
                     currentRoute == com.example.core.routes.AppRoutes.SETTINGS -> com.example.core.constants.AppAssets.settingsBanner
                     currentRoute == "quick_shopping" -> com.example.core.constants.AppAssets.expenseBanner
+                    currentRoute == "bulk_shopping" -> com.example.core.constants.AppAssets.expenseBanner
+                    currentRoute == "money_transaction" -> com.example.core.constants.AppAssets.expenseBanner
                     currentRoute?.startsWith("placeholder/") == true -> {
                         val titleArg = navBackStackEntry?.arguments?.getString("title") ?: ""
                         when (titleArg) {
@@ -350,6 +352,12 @@ fun NoxKaavApp() {
                         }
                         composable("quick_shopping") {
                             com.example.features.expense.QuickShoppingPage(onBack = { navController.popBackStack() })
+                        }
+                        composable("bulk_shopping") {
+                            com.example.features.expense.BulkShoppingPage(onBack = { navController.popBackStack() })
+                        }
+                        composable("money_transaction") {
+                            com.example.features.expense.MoneyTransactionPage(onBack = { navController.popBackStack() })
                         }
                         composable(com.example.core.routes.AppRoutes.PLACEHOLDER) { backStackEntry ->
                             val routeTitle = backStackEntry.arguments?.getString("title") ?: "Menu"

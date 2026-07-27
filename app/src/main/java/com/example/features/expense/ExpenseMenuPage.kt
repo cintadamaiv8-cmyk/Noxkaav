@@ -56,8 +56,8 @@ data class ExpenseMenu(
 fun ExpenseMenuPage(onNavigateTo: (String) -> Unit) {
     val menus = listOf(
         ExpenseMenu("Belanja Cepat", "Input cepat untuk satu barang", Icons.Default.ShoppingCart, "quick_shopping"),
-        ExpenseMenu("Belanja Banyak", "Input banyak barang sekaligus", Icons.Default.ShoppingBag),
-        ExpenseMenu("Transaksi Uang", "Kirim atau terima uang", Icons.Default.SwapHoriz),
+        ExpenseMenu("Belanja Banyak", "Input banyak barang sekaligus", Icons.Default.ShoppingBag, "bulk_shopping"),
+        ExpenseMenu("Transaksi Uang", "Kirim atau terima uang", Icons.Default.SwapHoriz, "money_transaction"),
         ExpenseMenu("Top Up E-Wallet", "Isi saldo OVO, Dana, dll", Icons.Default.AccountBalanceWallet),
         ExpenseMenu("Top Up Game", "Beli diamond atau voucher game", Icons.Default.SportsEsports)
     )

@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 
 class ExpenseViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: ExpenseRepository
-
     val allExpenses: StateFlow<List<Expense>>
 
     init {
@@ -30,6 +29,12 @@ class ExpenseViewModel(application: Application) : AndroidViewModel(application)
         val total = quantity * price
         viewModelScope.launch {
             repository.insert(Expense(itemName = itemName, quantity = quantity, price = price, total = total))
+        }
+    }
+
+    fun deleteExpense(expense: Expense) {
+        viewModelScope.launch {
+            repository.delete(expense)
         }
     }
 }
